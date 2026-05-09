@@ -17,7 +17,9 @@ Over the past year, I have had the opportunity to work hands‑on with a FANUC L
 * 🌍  I'm based in Binghamton, New York
 * ✉️  You can contact me at [sean.courtney271@gmail.com](mailto:sean.courtney271@gmail.com)
 * 🚀  I'm currently working on [Roombabot](http://github.com/seancourtney271/Docker-Rosbot-roomba)
-* 🧠  I'm currently learning Navigation and Behavioral Trees to depend my understanding of path planning and mission planning
+* 🧠  I'm currently learning Navigation and Behavior Trees to deepen my understanding of path planning and mission planning
+
+---
 
 ### Skills
 
@@ -80,6 +82,8 @@ Linux, Ubuntu, Git, Docker, Visual Studio Code, Azure
 
 **Automation & Control**  
 Motion Control, Sensor Processing, HMI Automation, Industrial Automation Systems
+
+---
 
 ### Socials
 
