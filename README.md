@@ -21,28 +21,6 @@ Over the past year, I have had the opportunity to work hands‑on with a FANUC L
 
 ### Skills
 
-**Robotics & Autonomy**  
-ROS 2, Mobile Robotics, Navigation (NAV2), SLAM, Sensor Fusion (EKF), Path Planning, Behavior Trees, Autonomous Systems  
-
-**Perception & AI**  
-Image Processing (OpenCV), Optical Character Recognition (OCR), Convolutional Neural Networks (CNNs), PyTorch, TensorFlow  
-
-**Programming Languages**  
-C++, Python, C#, Bash, C, Java  
-
-**Robotic & Embedded Platforms**  
-FANUC Industrial Robots, Arduino, Raspberry Pi, Embedded Linux  
-
-**Simulation & Robotics Tools**  
-Gazebo, Unity, URDF, TF2, ROS Visualization Tools  
-
-**Software & DevOps Tools**  
-Linux, Ubuntu, Git, Docker, Visual Studio Code, Azure  
-
-**Automation & Control**  
-Motion Control, Sensor Processing, HMI Automation, Industrial Automation Systems
-
-
 <p align="left">
   <a href="https://docs.microsoft.com/en-us/cpp/?view=msvc-170">
     <picture>
@@ -105,6 +83,29 @@ Motion Control, Sensor Processing, HMI Automation, Industrial Automation Systems
     </picture>
   </a>
 </p>
+
+
+**Robotics & Autonomy**  
+ROS 2, Mobile Robotics, Navigation (NAV2), SLAM, Sensor Fusion (EKF), Path Planning, Behavior Trees, Autonomous Systems  
+
+**Perception & AI**  
+Image Processing (OpenCV), Optical Character Recognition (OCR), Convolutional Neural Networks (CNNs), PyTorch, TensorFlow  
+
+**Programming Languages**  
+C++, Python, C#, Bash, C, Java  
+
+**Robotic & Embedded Platforms**  
+FANUC Industrial Robots, Arduino, Raspberry Pi, Embedded Linux  
+
+**Simulation & Robotics Tools**  
+Gazebo, Unity, URDF, TF2, ROS Visualization Tools  
+
+**Software & DevOps Tools**  
+Linux, Ubuntu, Git, Docker, Visual Studio Code, Azure  
+
+**Automation & Control**  
+Motion Control, Sensor Processing, HMI Automation, Industrial Automation Systems
+
 
 
 ### Socials
