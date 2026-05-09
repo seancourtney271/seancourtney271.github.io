@@ -82,3 +82,21 @@ Linux, Ubuntu, Git, Docker, Visual Studio Code, Azure
 
 **Automation & Control**  
 Motion Control, Sensor Processing, HMI Automation, Industrial Automation Systems
+
+
+---
+
+## Projects & Work
+
+### 🟢 Currently Working On
+
+#### 🧭 Roombabot — Autonomous Mobile Robot
+Autonomous mobile robot built with ROS 2, focused on SLAM, localization, and navigation in real and simulated environments. Actively developing behavior trees, recovery behaviors, and navigation tuning for robustness.
+
+**Tech:** ROS 2, NAV2, SLAM Toolbox, EKF, C++, Python  
+
+<!-- GIF Demo -->
+https://media.giphy.com/media/YOUR_GIF_ID/giphy.gif
+
+<!-- YouTube Video -->
+https://img.youtube.com/vi/YOUTUBE_VIDEO_ID/0.jpg
