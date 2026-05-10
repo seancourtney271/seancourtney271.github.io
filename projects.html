@@ -153,7 +153,7 @@
     */
     .project-media video {
       width: 100%; height: 100%;
-      object-fit: cover; display: block;
+      object-fit: contain; display: block;
     }
 
     /*
@@ -166,7 +166,7 @@
     */
     .project-media img {
       width: 100%; height: 100%;
-      object-fit: cover; display: block;
+      object-fit: contain; display: block;
     }
 
     /*
@@ -376,15 +376,7 @@
             </iframe>
         -->
 
-        <!-- DELETE this placeholder block once you add real media above -->
-        <div class="media-placeholder">
-          <div class="mp-icon">🤖</div>
-          <p>Add your Roombabot video or GIF here.<br/>
-             Replace this block with a &lt;video&gt; or &lt;img&gt; tag.</p>
-          <code>&lt;video autoplay muted loop playsinline&gt;<br/>
-  &lt;source src="assets/roombabot.mp4"/&gt;<br/>
-&lt;/video&gt;</code>
-        </div>
+        <img src="assets/roombabot/roombotNav.png" alt="Roombabot navigation demo"/>
 
         <!--
           ★ EXTRA THUMBNAILS (optional) ★
@@ -451,7 +443,8 @@
 
         <!-- ── LINKS — update hrefs, add/remove as needed ── -->
         <div class="proj-links">
-          <a href="https://github.com/seancourtney271/Docker-Rosbot-roomba" target="_blank" class="proj-link primary">GitHub Repo</a>
+          <a href="roombabot-details.html" class="proj-link primary">Project Details</a>
+          <a href="https://github.com/seancourtney271/Docker-Rosbot-roomba" target="_blank" class="proj-link">GitHub Repo</a>
           <!-- <a href="#" class="proj-link">Live Demo</a> -->
           <!-- <a href="#" class="proj-link">Paper / Write-up</a> -->
         </div>
@@ -464,29 +457,16 @@
 
 
     <!-- ╔══════════════════════════════════════════════════════════╗
-         ║  PROJECT 2 — replace with your second project           ║
-         ║  Update id="project2" to a short slug for deep-linking  ║
+         ║  PROJECT 2 — Reinforcement Learning Highway Project    ║
+         ║  id="reinforcement-learning-highway" for deep-linking   ║
          ╚══════════════════════════════════════════════════════════╝ -->
-    <div class="project-entry" id="project2">
+    <div class="project-entry" id="reinforcement-learning-highway">
 
       <div class="project-media">
-        <!--
-          ★ DROP YOUR MAIN VIDEO / GIF HERE ★
-          Same options as above — video, gif, or YouTube iframe.
-        -->
-        <div class="media-placeholder">
-          <div class="mp-icon">⚙️</div>
-          <p>Add your project 2 video or GIF here.</p>
-          <code>&lt;video autoplay muted loop playsinline&gt;<br/>
-  &lt;source src="assets/project2.mp4"/&gt;<br/>
-&lt;/video&gt;</code>
-        </div>
-        <!--
-        <div class="media-extras">
-          <img src="assets/proj2-thumb1.png" alt="Screenshot 1"/>
-          <img src="assets/proj2-thumb2.gif" alt="Demo clip"/>
-        </div>
-        -->
+        <video autoplay muted loop playsinline>
+          <source src="assets/reinforcement_learning_highway_project/highway_ppo.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
       </div>
 
       <div class="project-info">
@@ -494,55 +474,48 @@
         <span class="proj-status complete">● complete</span>
 
         <!-- ── PROJECT TITLE ── -->
-        <p class="proj-title">Project Title</p>
+        <p class="proj-title">Reinforcement Learning for Autonomous Highway Driving</p>
         <!-- ── SHORT SUBTITLE ── -->
-        <p class="proj-subtitle">Category · Main Tech</p>
+        <p class="proj-subtitle">Machine Learning · Python · Highway-Env</p>
 
         <!-- ══════════════════════════════════════════════════
-             ★ YOUR DESCRIPTION GOES HERE ★
+             ★ PROJECT DESCRIPTION ★
         ══════════════════════════════════════════════════ -->
         <div class="proj-desc">
           <p>
-            <!-- DESCRIPTION: What did you build and why? -->
-            Describe what this project is and what problem it solves.
+            This project implements and compares multiple reinforcement learning algorithms for autonomous vehicle control in highway driving scenarios. The goal is to train agents that can safely navigate complex traffic environments, make optimal driving decisions, and achieve efficient lane changes and speed control.
           </p>
           <p>
-            <!-- DESCRIPTION: Technical approach / interesting details -->
-            Explain the interesting technical bits here.
+            Using the Highway-Env simulation environment, we evaluated six different reinforcement learning algorithms including A2C, PPO, DQN, Dueling DQN, DDPG, and APPO, comparing their performance across metrics like safety, efficiency, and learning stability.
           </p>
-          <ul>
-            <!-- ── BULLET HIGHLIGHTS ── -->
-            <li>Key feature or result 1</li>
-            <li>Key feature or result 2</li>
-            <li>Key feature or result 3</li>
-          </ul>
         </div>
 
         <!-- ── TECH TAGS ── -->
         <div class="proj-tags">
-          <span class="tag">Tech 1</span>
-          <span class="tag">Tech 2</span>
-          <span class="tag">Tech 3</span>
+          <span class="tag">Python</span>
+          <span class="tag">Reinforcement Learning</span>
+          <span class="tag">PyTorch</span>
+          <span class="tag">Autonomous Driving</span>
+          <span class="tag">Stable-Baselines3</span>
+          <span class="tag">Highway-Env</span>
         </div>
 
         <!-- ── LINKS ── -->
         <div class="proj-links">
-          <a href="#" class="proj-link primary">GitHub Repo</a>
-          <!-- <a href="#" class="proj-link">Demo Video</a> -->
+          <a href="project2-details.html" class="proj-link primary">Project Details</a>
+          <a href="assets/reinforcement_learning_highway_project/cwbrazea_ishaanma_seancour_Final_Project_Report.pdf" class="proj-link" target="_blank">Final Report (PDF)</a>
         </div>
       </div>
-    </div><!-- /.project-entry #project2 -->
+    </div><!-- /.project-entry #reinforcement-learning-highway -->
 
 
-    <!-- ╔══════════════════════════════════════════════════════════╗
-         ║  PROJECT 3                                               ║
-         ╚══════════════════════════════════════════════════════════╝ -->
+    <!--
+    ╔══════════════════════════════════════════════════════════╗
+         ║  PROJECT 3 — COMMENTED OUT (not filled out yet)       ║
+         ╚══════════════════════════════════════════════════════════╝
     <div class="project-entry" id="project3">
 
       <div class="project-media">
-        <!--
-          ★ DROP YOUR MAIN VIDEO / GIF HERE ★
-        -->
         <div class="media-placeholder">
           <div class="mp-icon">🦾</div>
           <p>Add your project 3 video or GIF here.</p>
@@ -557,7 +530,6 @@
 
         <div class="proj-desc">
           <p>
-            <!-- DESCRIPTION ── -->
             Describe what this project is and what problem it solves.
           </p>
           <ul>
@@ -572,15 +544,17 @@
         </div>
 
         <div class="proj-links">
-          <a href="#" class="proj-link primary">GitHub Repo</a>
+          <a href="#" class="proj-link">GitHub Repo</a>
         </div>
       </div>
-    </div><!-- /.project-entry #project3 -->
+    </div>
+    -->
 
 
-    <!-- ╔══════════════════════════════════════════════════════════╗
-         ║  PROJECT 4 — duplicate this block for more projects      ║
-         ╚══════════════════════════════════════════════════════════╝ -->
+    <!--
+    ╔══════════════════════════════════════════════════════════╗
+         ║  PROJECT 4 — COMMENTED OUT (not filled out yet)       ║
+         ╚══════════════════════════════════════════════════════════╝
     <div class="project-entry" id="project4">
 
       <div class="project-media">
@@ -600,7 +574,6 @@
 
         <div class="proj-desc">
           <p>
-            <!-- DESCRIPTION ── -->
             Describe what this project is and what problem it solves.
           </p>
           <ul>
@@ -615,14 +588,17 @@
         </div>
 
         <div class="proj-links">
-          <a href="#" class="proj-link primary">GitHub Repo</a>
+          <a href="#" class="proj-link">GitHub Repo</a>
         </div>
       </div>
-    </div><!-- /.project-entry #project4 -->
+    </div>
+    -->
 
-
-    <!-- ── ADD MORE PROJECTS BY DUPLICATING A .project-entry BLOCK ABOVE ── -->
-
+    <!-- ── WORK IN PROGRESS NOTICE ── -->
+    <div style="text-align: center; padding: 3rem 2rem; color: var(--muted); font-family: var(--mono);">
+      <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">🚧 Work in Progress 🚧</p>
+      <p>I'm still fleshing out this projects page. More exciting robotics and AI projects coming soon!</p>
+    </div>
 
   </div><!-- /.projects-container -->
 

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Roombabot — Sean Courtney</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    /* ─── DESIGN TOKENS (keep in sync with index.html) ──────────── */
+    :root {
+      --bg:        #0a0c0f;
+      --surface:   #111418;
+      --surface2:  #161b22;
+      --border:    #1e2530;
+      --accent:    #00d4aa;
+      --accent2:   #0087ff;
+      --text:      #dce6f0;
+      --muted:     #5a6a7e;
+      --mono:      'Share Tech Mono', monospace;
+      --sans:      'DM Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* grid background */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.3;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ─── NAV ────────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,12,15,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-logo { font-family: var(--mono); color: var(--accent); font-size: 0.9rem; }
+    .nav-back {
+      font-family: var(--mono); font-size: 0.78rem;
+      color: var(--muted); transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--accent); text-decoration: none; }
+
+    /* ─── PAGE HEADER ────────────────────────────────────────────── */
+    .page-header {
+      padding: 5rem 2rem 3rem;
+      max-width: 1000px; margin: 0 auto;
+      position: relative; z-index: 1;
+    }
+    .page-tag {
+      font-family: var(--mono); font-size: 0.72rem;
+      color: var(--accent); letter-spacing: 0.18em;
+      text-transform: uppercase; margin-bottom: 0.6rem;
+    }
+    h1 {
+      font-family: var(--mono);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 400; color: #fff;
+      animation: fadeUp 0.6s 0.1s both;
+    }
+    .page-sub {
+      color: var(--muted); font-size: 0.9rem;
+      font-family: var(--mono); margin-top: 0.5rem;
+      animation: fadeUp 0.6s 0.25s both;
+    }
+
+    /* ─── MAIN CONTENT AREA ──────────────────────────────────────── */
+    .content-container {
+      max-width: 900px; margin: 0 auto;
+      padding: 0 2rem 6rem;
+      position: relative; z-index: 1;
+    }
+
+    /* ─── CONTENT SECTIONS ───────────────────────────────────────── */
+    .content-section {
+      margin-bottom: 3rem;
+      padding: 2rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--surface);
+    }
+
+    .section-title {
+      font-family: var(--mono);
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .section-content {
+      color: #8fa0b4;
+      line-height: 1.8;
+    }
+
+    .section-content p {
+      margin-bottom: 1rem;
+    }
+
+    .section-content ul {
+      margin: 1rem 0 1rem 1.2rem;
+      font-size: 0.95rem;
+      color: #8fa0b4;
+    }
+
+    .section-content ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    .section-content strong {
+      color: var(--text);
+    }
+
+    /* ─── MEDIA GALLERY ──────────────────────────────────────────── */
+    .media-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .gallery-item {
+      aspect-ratio: 4/3;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      background: #0e1319;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gallery-item img,
+    .gallery-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ─── TAGS ───────────────────────────────────────────────────── */
+    .proj-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin: 1.5rem 0;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      padding: 0.25rem 0.6rem;
+      background: rgba(0,212,170,0.07);
+      border: 1px solid rgba(0,212,170,0.18);
+      border-radius: 2px;
+      color: #8fa0b4;
+    }
+
+    /* ─── LINKS ──────────────────────────────────────────────────── */
+    .proj-links {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .proj-link {
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+
+    .proj-link:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      text-decoration: none;
+    }
+
+    .proj-link.primary {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+    }
+
+    .proj-link.primary:hover {
+      background: transparent;
+      color: var(--accent);
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────────── */
+    @media (max-width: 720px) {
+      .content-section {
+        padding: 1.5rem;
+      }
+
+      .media-gallery {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ─── SYNCED VIDEOS ──────────────────────────────────────────── */
+    .synced-videos-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .synced-video-item {
+      border-radius: 4px;
+      overflow: hidden;
+      background: #0e1319;
+    }
+
+    .synced-video-item video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .synced-video-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      padding: 0.5rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    @media (max-width: 720px) {
+      .synced-videos-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════════════════════════
+       NAV
+  ════════════════════════════════════════════════════════════ -->
+  <nav>
+    <div class="nav-logo">SC // roombabot</div>
+    <a href="projects.html" class="nav-back">← back to projects</a>
+  </nav>
+
+  <!-- ════════════════════════════════════════════════════════════
+       PAGE HEADER
+  ════════════════════════════════════════════════════════════ -->
+  <div class="page-header">
+    <p class="page-tag">// project details</p>
+    <h1>Roombabot</h1>
+    <p class="page-sub">Autonomous Mobile Robot · ROS 2</p>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       CONTENT
+  ════════════════════════════════════════════════════════════ -->
+  <div class="content-container">
+
+    <!-- ── OVERVIEW ── -->
+    <div class="content-section">
+      <h2 class="section-title">Overview</h2>
+      <div class="section-content">
+        <p>
+          Roombabot is an autonomous mobile robot platform built on top of a Roomba base, 
+          running ROS 2 with a full SLAM, localization, and navigation stack. The platform 
+          is designed for research and development in autonomous navigation and robotic perception.
+        </p>
+        <p>
+          The robot combines hardware-level motor control with advanced software algorithms to 
+          achieve real-time autonomous navigation in indoor environments.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── TECHNICAL DETAILS ── -->
+    <div class="content-section">
+      <h2 class="section-title">Technical Stack</h2>
+      <div class="section-content">
+        <ul>
+          <li><strong>Operating System:</strong> ROS 2 (Humble)</li>
+          <li><strong>SLAM:</strong> SLAM Toolbox for real-time map building</li>
+          <li><strong>Localization:</strong> Particle Filter-based localization</li>
+          <li><strong>Sensor Fusion:</strong> EKF combining IMU and wheel odometry</li>
+          <li><strong>Planning:</strong> NAV2 stack with global and local planning</li>
+          <li><strong>Behavior:</strong> Behavior trees for mission planning</li>
+          <li><strong>Languages:</strong> C++ and Python</li>
+          <li><strong>Deployment:</strong> Docker containers for reproducibility</li>
+        </ul>
+      </div>
+
+      <!-- ── TECH TAGS ── -->
+      <div class="proj-tags">
+        <span class="tag">ROS 2</span>
+        <span class="tag">NAV2</span>
+        <span class="tag">SLAM Toolbox</span>
+        <span class="tag">EKF</span>
+        <span class="tag">Behavior Trees</span>
+        <span class="tag">C++</span>
+        <span class="tag">Python</span>
+        <span class="tag">Docker</span>
+      </div>
+    </div>
+
+    <!-- ── KEY FEATURES ── -->
+    <div class="content-section">
+      <h2 class="section-title">Key Features</h2>
+      <div class="section-content">
+        <ul>
+          <li><strong>Real-time SLAM:</strong> Simultaneous Localization and Mapping using SLAM Toolbox</li>
+          <li><strong>Autonomous Navigation:</strong> Path planning and obstacle avoidance using NAV2</li>
+          <li><strong>Recovery Behaviors:</strong> Stuck detection and automatic recovery routines</li>
+          <li><strong>Mission Planning:</strong> Behavior tree-based task execution and sequencing</li>
+          <li><strong>Sensor Integration:</strong> LiDAR, IMU, and encoders with sensor fusion</li>
+          <li><strong>Docker Deployment:</strong> Containerized environment for easy setup and reproducibility</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ── CURRENT DEVELOPMENT ── -->
+    <div class="content-section">
+      <h2 class="section-title">Current Development</h2>
+      <div class="section-content">
+        <p>
+          The project is actively being developed with focus on:
+        </p>
+        <ul>
+          <li>Learning behavior trees for complex mission planning</li>
+          <!-- <li>Improving stuck detection and recovery strategies</li> -->
+          <li>Parameter tuning for better real-world navigation robustness</li>
+          <li>Debugging encoder issues on the real-world robot</li>
+          <!-- <li>Integration with additional sensors for enhanced perception</li> -->
+        </ul>
+      </div>
+    </div>
+
+    <!-- ── VIDEO 1: BFS PATH PLANNING ── -->
+    <div class="content-section">
+      <h2 class="section-title">BFS Path Planning</h2>
+      <div class="section-content">
+        <div style="margin-bottom: 1.5rem; border-radius: 4px; overflow: hidden; background: #0e1319;">
+          <video autoplay muted loop playsinline style="width: 100%; height: auto; display: block;">
+            <source src="assets/roombabot/BFS_PathPlanning.mp4" type="video/mp4"/>
+          </video>
+        </div>
+        <p>
+          <!-- Add your description of the BFS pathfinding algorithm here -->
+          Breadth-First Search (BFS) pathfinding demo. This algorithm explores the environment 
+          systematically to find the shortest path from the robot's current position to the goal.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── VIDEO 2: RRT PATH PLANNING ── -->
+    <div class="content-section">
+      <h2 class="section-title">RRT Path Planning</h2>
+      <div class="section-content">
+        <div style="margin-bottom: 1.5rem; border-radius: 4px; overflow: hidden; background: #0e1319;">
+          <video autoplay muted loop playsinline style="width: 100%; height: auto; display: block;">
+            <source src="assets/roombabot/RRT__PathPlanning.mp4" type="video/mp4"/>
+          </video>
+        </div>
+        <p>
+          <!-- Add your description of the RRT pathfinding algorithm here -->
+          Rapidly-exploring Random Tree (RRT) pathfinding demo. This algorithm efficiently explores 
+          high-dimensional spaces by building a tree of random samples, allowing for rapid planning 
+          even in complex environments.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── VIDEO 3: ASTAR PATH WITH PD LOCAL PLANNER ── -->
+    <div class="content-section">
+      <h2 class="section-title">Astar Path With PD Local Planner</h2>
+      <div class="section-content">
+        <p style="margin-bottom: 1rem;">
+          <!-- Add your description here -->
+          Comparison of two PD local planner implementations with A* pathfinding. Watch both 
+          approaches side-by-side to see how different tuning parameters affect navigation behavior.
+        </p>
+        <div class="synced-videos-container">
+          <div class="synced-video-item">
+            <video autoplay muted loop playsinline style="width: 100%; height: auto; display: block;">
+              <source src="assets/roombabot/Astar_Path_W_PD_LocalPlanner.mp4" type="video/mp4"/>
+            </video>
+            <div class="synced-video-label">Real-World Navigation</div>
+          </div>
+          <div class="synced-video-item">
+            <video autoplay muted loop playsinline style="width: 100%; height: auto; display: block;">
+              <source src="assets/roombabot/Astar_Path_W_PD_LocalPlanner_Gazebo.mp4" type="video/mp4"/>
+            </video>
+            <div class="synced-video-label">Gazebo Simulation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LINKS ── -->
+    <div class="content-section">
+      <h2 class="section-title">Resources</h2>
+      <div class="proj-links">
+        <a href="https://github.com/seancourtney271/Docker-Rosbot-roomba" target="_blank" class="proj-link primary">GitHub Repository</a>
+        <a href="projects.html#roombabot" class="proj-link">Back to Projects</a>
+      </div>
+    </div>
+
+  </div><!-- /.content-container -->
+
+  <!-- ════════════════════════════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════════════════════════════ -->
+  <footer style="border-top:1px solid var(--border);padding:2rem;text-align:center;font-family:var(--mono);font-size:0.72rem;color:var(--muted);position:relative;z-index:1;">
+    <p>© 2025 Sean Courtney &nbsp;·&nbsp;
+      <a href="index.html">← home</a> &nbsp;·&nbsp;
+      <a href="https://github.com/seancourtney271" target="_blank">github.com/seancourtney271</a>
+    </p>
+  </footer>
+
+</body>
+</html>

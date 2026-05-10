@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Project 4 — Sean Courtney</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    /* ─── DESIGN TOKENS (keep in sync with index.html) ──────────── */
+    :root {
+      --bg:        #0a0c0f;
+      --surface:   #111418;
+      --surface2:  #161b22;
+      --border:    #1e2530;
+      --accent:    #00d4aa;
+      --accent2:   #0087ff;
+      --text:      #dce6f0;
+      --muted:     #5a6a7e;
+      --mono:      'Share Tech Mono', monospace;
+      --sans:      'DM Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* grid background */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.3;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ─── NAV ────────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,12,15,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-logo { font-family: var(--mono); color: var(--accent); font-size: 0.9rem; }
+    .nav-back {
+      font-family: var(--mono); font-size: 0.78rem;
+      color: var(--muted); transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--accent); text-decoration: none; }
+
+    /* ─── PAGE HEADER ────────────────────────────────────────────── */
+    .page-header {
+      padding: 5rem 2rem 3rem;
+      max-width: 1000px; margin: 0 auto;
+      position: relative; z-index: 1;
+    }
+    .page-tag {
+      font-family: var(--mono); font-size: 0.72rem;
+      color: var(--accent); letter-spacing: 0.18em;
+      text-transform: uppercase; margin-bottom: 0.6rem;
+    }
+    h1 {
+      font-family: var(--mono);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 400; color: #fff;
+      animation: fadeUp 0.6s 0.1s both;
+    }
+    .page-sub {
+      color: var(--muted); font-size: 0.9rem;
+      font-family: var(--mono); margin-top: 0.5rem;
+      animation: fadeUp 0.6s 0.25s both;
+    }
+
+    /* ─── MAIN CONTENT AREA ──────────────────────────────────────── */
+    .content-container {
+      max-width: 900px; margin: 0 auto;
+      padding: 0 2rem 6rem;
+      position: relative; z-index: 1;
+    }
+
+    /* ─── CONTENT SECTIONS ───────────────────────────────────────── */
+    .content-section {
+      margin-bottom: 3rem;
+      padding: 2rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--surface);
+    }
+
+    .section-title {
+      font-family: var(--mono);
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .section-content {
+      color: #8fa0b4;
+      line-height: 1.8;
+    }
+
+    .section-content p {
+      margin-bottom: 1rem;
+    }
+
+    .section-content ul {
+      margin: 1rem 0 1rem 1.2rem;
+      font-size: 0.95rem;
+      color: #8fa0b4;
+    }
+
+    .section-content ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    .section-content strong {
+      color: var(--text);
+    }
+
+    /* ─── MEDIA GALLERY ──────────────────────────────────────────── */
+    .media-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+
+    .gallery-item {
+      aspect-ratio: 4/3;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      background: #0e1319;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gallery-item img,
+    .gallery-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ─── TAGS ───────────────────────────────────────────────────── */
+    .proj-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin: 1.5rem 0;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      padding: 0.25rem 0.6rem;
+      background: rgba(0,212,170,0.07);
+      border: 1px solid rgba(0,212,170,0.18);
+      border-radius: 2px;
+      color: #8fa0b4;
+    }
+
+    /* ─── LINKS ──────────────────────────────────────────────────── */
+    .proj-links {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .proj-link {
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+
+    .proj-link:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      text-decoration: none;
+    }
+
+    .proj-link.primary {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+    }
+
+    .proj-link.primary:hover {
+      background: transparent;
+      color: var(--accent);
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────────── */
+    @media (max-width: 720px) {
+      .content-section {
+        padding: 1.5rem;
+      }
+
+      .media-gallery {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════════════════════════
+       NAV
+  ════════════════════════════════════════════════════════════ -->
+  <nav>
+    <div class="nav-logo">SC // project 4</div>
+    <a href="projects.html" class="nav-back">← back to projects</a>
+  </nav>
+
+  <!-- ════════════════════════════════════════════════════════════
+       PAGE HEADER
+  ════════════════════════════════════════════════════════════ -->
+  <div class="page-header">
+    <p class="page-tag">// project details</p>
+    <h1>Project Title</h1>
+    <p class="page-sub">Category · Main Technology</p>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       CONTENT
+  ════════════════════════════════════════════════════════════ -->
+  <div class="content-container">
+
+    <!-- ── OVERVIEW ── -->
+    <div class="content-section">
+      <h2 class="section-title">Overview</h2>
+      <div class="section-content">
+        <p>
+          Add your project overview here. Describe what this project is and what problem it solves.
+        </p>
+        <p>
+          Explain the motivation behind the project and the key challenges you addressed.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── TECHNICAL DETAILS ── -->
+    <div class="content-section">
+      <h2 class="section-title">Technical Stack</h2>
+      <div class="section-content">
+        <ul>
+          <li><strong>Technology 1:</strong> Description</li>
+          <li><strong>Technology 2:</strong> Description</li>
+          <li><strong>Technology 3:</strong> Description</li>
+        </ul>
+      </div>
+
+      <!-- ── TECH TAGS ── -->
+      <div class="proj-tags">
+        <span class="tag">Tech 1</span>
+        <span class="tag">Tech 2</span>
+        <span class="tag">Tech 3</span>
+      </div>
+    </div>
+
+    <!-- ── KEY FEATURES ── -->
+    <div class="content-section">
+      <h2 class="section-title">Key Features</h2>
+      <div class="section-content">
+        <ul>
+          <li><strong>Feature 1:</strong> Description of the feature and its impact</li>
+          <li><strong>Feature 2:</strong> Description of the feature and its impact</li>
+          <li><strong>Feature 3:</strong> Description of the feature and its impact</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ── CURRENT STATUS ── -->
+    <div class="content-section">
+      <h2 class="section-title">Status</h2>
+      <div class="section-content">
+        <p>
+          Describe the current state of the project. Is it complete, in progress, or archived?
+        </p>
+      </div>
+    </div>
+
+    <!-- ── GALLERY ── -->
+    <div class="content-section">
+      <h2 class="section-title">Media Gallery</h2>
+      <div class="media-gallery">
+        <!-- Add your images/videos here -->
+        <div class="gallery-item" style="background: rgba(0,212,170,0.1); display: flex; align-items: center; justify-content: center; color: var(--muted);">
+          <span style="font-family: var(--mono); font-size: 0.8rem; text-align: center;">Add gallery images<br/>or videos here</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LINKS ── -->
+    <div class="content-section">
+      <h2 class="section-title">Resources</h2>
+      <div class="proj-links">
+        <a href="#" class="proj-link primary">GitHub Repository</a>
+        <a href="projects.html#project4" class="proj-link">Back to Projects</a>
+      </div>
+    </div>
+
+  </div><!-- /.content-container -->
+
+  <!-- ════════════════════════════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════════════════════════════ -->
+  <footer style="border-top:1px solid var(--border);padding:2rem;text-align:center;font-family:var(--mono);font-size:0.72rem;color:var(--muted);position:relative;z-index:1;">
+    <p>© 2025 Sean Courtney &nbsp;·&nbsp;
+      <a href="index.html">← home</a> &nbsp;·&nbsp;
+      <a href="https://github.com/seancourtney271" target="_blank">github.com/seancourtney271</a>
+    </p>
+  </footer>
+
+</body>
+</html>
