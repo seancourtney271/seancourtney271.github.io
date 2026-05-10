@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Projects — Sean Courtney</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    /* ─── DESIGN TOKENS (keep in sync with index.html) ──────────── */
+    :root {
+      --bg:        #0a0c0f;
+      --surface:   #111418;
+      --surface2:  #161b22;
+      --border:    #1e2530;
+      --accent:    #00d4aa;
+      --accent2:   #0087ff;
+      --text:      #dce6f0;
+      --muted:     #5a6a7e;
+      --mono:      'Share Tech Mono', monospace;
+      --sans:      'DM Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* grid background */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.3;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ─── NAV ────────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,12,15,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-logo { font-family: var(--mono); color: var(--accent); font-size: 0.9rem; }
+    .nav-back {
+      font-family: var(--mono); font-size: 0.78rem;
+      color: var(--muted); transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--accent); text-decoration: none; }
+
+    /* ─── PAGE HEADER ────────────────────────────────────────────── */
+    .page-header {
+      padding: 5rem 2rem 3rem;
+      max-width: 1000px; margin: 0 auto;
+      position: relative; z-index: 1;
+    }
+    .page-tag {
+      font-family: var(--mono); font-size: 0.72rem;
+      color: var(--accent); letter-spacing: 0.18em;
+      text-transform: uppercase; margin-bottom: 0.6rem;
+    }
+    h1 {
+      font-family: var(--mono);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 400; color: #fff;
+      animation: fadeUp 0.6s 0.1s both;
+    }
+    .page-sub {
+      color: var(--muted); font-size: 0.9rem;
+      font-family: var(--mono); margin-top: 0.5rem;
+      animation: fadeUp 0.6s 0.25s both;
+    }
+
+    /* ─── FILTER TABS ────────────────────────────────────────────── */
+    .filter-bar {
+      max-width: 1000px; margin: 0 auto 2rem;
+      padding: 0 2rem;
+      display: flex; gap: 0.6rem; flex-wrap: wrap;
+      position: relative; z-index: 1;
+    }
+    .filter-btn {
+      font-family: var(--mono); font-size: 0.72rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      background: transparent; color: var(--muted);
+      border: 1px solid var(--border); border-radius: 2px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .filter-btn:hover,
+    .filter-btn.active { color: var(--accent); border-color: var(--accent); background: rgba(0,212,170,0.05); }
+
+    /* ─── MAIN CONTENT AREA ──────────────────────────────────────── */
+    .projects-container {
+      max-width: 1000px; margin: 0 auto;
+      padding: 0 2rem 6rem;
+      position: relative; z-index: 1;
+    }
+
+    /* ─── PROJECT ENTRY ──────────────────────────────────────────── */
+    /*
+      Each .project-entry is one full project block.
+      It contains:
+        .project-media  — video / GIF / image area (left or top)
+        .project-info   — title, description, tags, links (right or bottom)
+    */
+    .project-entry {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 2.5rem;
+      background: var(--surface);
+      transition: border-color 0.25s;
+    }
+    .project-entry:hover { border-color: rgba(0,212,170,0.4); }
+
+    /* ── MEDIA PANEL ── */
+    .project-media {
+      position: relative;
+      background: #0e1319;
+      min-height: 320px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      overflow: hidden;
+      border-right: 1px solid var(--border);
+    }
+
+    /*
+      ════════════════════════════════════════════
+      VIDEO SLOT — autoplay loop (recommended)
+      Replace the placeholder div with:
+
+        <video autoplay muted loop playsinline>
+          <source src="assets/YOUR_VIDEO.mp4" type="video/mp4"/>
+        </video>
+
+      ════════════════════════════════════════════
+    */
+    .project-media video {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+
+    /*
+      ════════════════════════════════════════════
+      GIF SLOT — use an <img> tag instead:
+
+        <img src="assets/YOUR_DEMO.gif" alt="Project demo"/>
+
+      ════════════════════════════════════════════
+    */
+    .project-media img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+
+    /*
+      ════════════════════════════════════════════
+      YOUTUBE EMBED — use an <iframe> instead:
+
+        <iframe
+          src="https://www.youtube.com/embed/YOUR_VIDEO_ID?autoplay=1&mute=1&loop=1&playlist=YOUR_VIDEO_ID"
+          frameborder="0"
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+          style="width:100%;height:100%;position:absolute;inset:0;">
+        </iframe>
+
+      ════════════════════════════════════════════
+    */
+
+    /* placeholder shown until you add real media */
+    .media-placeholder {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 0.75rem; padding: 2rem;
+      text-align: center; width: 100%;
+    }
+    .media-placeholder .mp-icon {
+      font-size: 2.5rem; opacity: 0.25;
+    }
+    .media-placeholder p {
+      font-family: var(--mono); font-size: 0.7rem;
+      color: var(--muted); line-height: 1.6;
+    }
+    .media-placeholder code {
+      display: block; margin-top: 0.5rem;
+      font-size: 0.65rem; color: var(--accent);
+      background: rgba(0,212,170,0.08);
+      padding: 0.4rem 0.6rem; border-radius: 3px;
+      text-align: left;
+    }
+
+    /* extra media thumbnails row */
+    .media-extras {
+      display: flex; gap: 4px;
+      padding: 4px; background: #0a0c0f;
+      border-top: 1px solid var(--border);
+      width: 100%;
+    }
+    .media-extras img,
+    .media-extras video {
+      width: 60px; height: 45px;
+      object-fit: cover; border-radius: 2px;
+      cursor: pointer; opacity: 0.7; transition: opacity 0.2s;
+    }
+    .media-extras img:hover,
+    .media-extras video:hover { opacity: 1; }
+
+    /* ── INFO PANEL ── */
+    .project-info {
+      padding: 2rem 2rem 1.75rem;
+      display: flex; flex-direction: column;
+    }
+    .proj-status {
+      font-family: var(--mono); font-size: 0.65rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .proj-status.active  { color: var(--accent); }
+    .proj-status.complete { color: var(--accent2); }
+    .proj-status.archived { color: var(--muted); }
+
+    .proj-title {
+      font-family: var(--mono); font-size: 1.35rem;
+      color: #fff; margin-bottom: 0.25rem;
+    }
+    .proj-subtitle {
+      font-size: 0.82rem; color: var(--muted);
+      font-family: var(--mono); margin-bottom: 1.25rem;
+    }
+
+    /* ─── DESCRIPTION BLOCK ──────────────────────────────────────── */
+    .proj-desc {
+      font-size: 0.9rem; color: #8fa0b4;
+      margin-bottom: 1.5rem; flex: 1;
+    }
+    .proj-desc p { margin-bottom: 0.75rem; }
+    .proj-desc ul {
+      margin: 0.5rem 0 0.75rem 1.2rem;
+      font-size: 0.85rem; color: #6a7f96;
+    }
+    .proj-desc ul li { margin-bottom: 0.3rem; }
+
+    /* ─── TAGS ───────────────────────────────────────────────────── */
+    .proj-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
+    .tag {
+      font-family: var(--mono); font-size: 0.68rem;
+      padding: 0.25rem 0.6rem;
+      background: rgba(0,212,170,0.07);
+      border: 1px solid rgba(0,212,170,0.18);
+      border-radius: 2px; color: #8fa0b4;
+    }
+
+    /* ─── LINKS ──────────────────────────────────────────────────── */
+    .proj-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .proj-link {
+      font-family: var(--mono); font-size: 0.74rem;
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 2px; color: var(--muted);
+      transition: all 0.2s;
+    }
+    .proj-link:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
+    .proj-link.primary {
+      background: var(--accent); color: #000;
+      border-color: var(--accent);
+    }
+    .proj-link.primary:hover { background: transparent; color: var(--accent); }
+
+    /* ─── DIVIDER LABEL ──────────────────────────────────────────── */
+    .section-divider {
+      display: flex; align-items: center; gap: 1rem;
+      margin: 3.5rem 0 2rem;
+    }
+    .section-divider span {
+      font-family: var(--mono); font-size: 0.72rem;
+      color: var(--muted); letter-spacing: 0.15em;
+      text-transform: uppercase; white-space: nowrap;
+    }
+    .section-divider::before,
+    .section-divider::after {
+      content: ''; flex: 1; height: 1px;
+      background: var(--border);
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────────── */
+    @media (max-width: 720px) {
+      .project-entry { grid-template-columns: 1fr; }
+      .project-media { border-right: none; border-bottom: 1px solid var(--border); min-height: 220px; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════════════════════════
+       NAV
+  ════════════════════════════════════════════════════════════ -->
+  <nav>
+    <div class="nav-logo">SC // projects</div>
+    <a href="index.html" class="nav-back">← back to home</a>
+  </nav>
+
+  <!-- ════════════════════════════════════════════════════════════
+       PAGE HEADER
+  ════════════════════════════════════════════════════════════ -->
+  <div class="page-header">
+    <p class="page-tag">// project showcase</p>
+    <h1>Work &amp; Demos</h1>
+    <!-- ── PAGE SUBTITLE — update as you like ── -->
+    <p class="page-sub">Videos, GIFs, and breakdowns of robotics &amp; autonomy projects.</p>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       FILTER BAR (purely visual for now — wire up JS if needed)
+  ════════════════════════════════════════════════════════════ -->
+  <div class="filter-bar">
+    <button class="filter-btn active">All</button>
+    <button class="filter-btn">Autonomous Mobile</button>
+    <button class="filter-btn">Perception / AI</button>
+    <button class="filter-btn">Industrial</button>
+    <button class="filter-btn">Simulation</button>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       PROJECTS LIST
+  ════════════════════════════════════════════════════════════ -->
+  <div class="projects-container">
+
+
+    <!-- ╔══════════════════════════════════════════════════════════╗
+         ║  PROJECT 1 — ROOMBABOT                                  ║
+         ║  id="roombabot" lets index.html link directly here      ║
+         ╚══════════════════════════════════════════════════════════╝ -->
+    <div class="project-entry" id="roombabot">
+
+      <!-- ── MEDIA PANEL ── -->
+      <div class="project-media">
+
+        <!--
+          ★ DROP YOUR MAIN VIDEO / GIF HERE ★
+          ────────────────────────────────────
+          Option A — MP4 video (recommended, smallest file):
+            <video autoplay muted loop playsinline>
+              <source src="assets/roombabot-demo.mp4" type="video/mp4"/>
+            </video>
+
+          Option B — Animated GIF:
+            <img src="assets/roombabot-demo.gif" alt="Roombabot navigation demo"/>
+
+          Option C — YouTube embed:
+            <iframe
+              src="https://www.youtube.com/embed/YOUR_ID?autoplay=1&mute=1&loop=1&playlist=YOUR_ID"
+              frameborder="0" allow="autoplay; encrypted-media" allowfullscreen
+              style="width:100%;height:100%;position:absolute;inset:0;">
+            </iframe>
+        -->
+
+        <!-- DELETE this placeholder block once you add real media above -->
+        <div class="media-placeholder">
+          <div class="mp-icon">🤖</div>
+          <p>Add your Roombabot video or GIF here.<br/>
+             Replace this block with a &lt;video&gt; or &lt;img&gt; tag.</p>
+          <code>&lt;video autoplay muted loop playsinline&gt;<br/>
+  &lt;source src="assets/roombabot.mp4"/&gt;<br/>
+&lt;/video&gt;</code>
+        </div>
+
+        <!--
+          ★ EXTRA THUMBNAILS (optional) ★
+          Add more clips or screenshots here — they appear as a
+          small row at the bottom of the media panel.
+          Uncomment and fill in:
+
+        <div class="media-extras">
+          <img src="assets/roombabot-rviz.png"   alt="RViz map"/>
+          <img src="assets/roombabot-slam.gif"   alt="SLAM building"/>
+          <img src="assets/roombabot-nav.gif"    alt="Autonomous nav"/>
+        </div>
+        -->
+
+      </div><!-- /.project-media -->
+
+      <!-- ── INFO PANEL ── -->
+      <div class="project-info">
+        <span class="proj-status active">● active development</span>
+
+        <!-- ── PROJECT TITLE ── -->
+        <p class="proj-title">Roombabot</p>
+        <!-- ── SHORT SUBTITLE ── -->
+        <p class="proj-subtitle">Autonomous Mobile Robot · ROS 2</p>
+
+        <!-- ══════════════════════════════════════════════════
+             ★ YOUR DESCRIPTION GOES HERE ★
+             Write as many <p> tags as you need.
+             Add a <ul> for bullet-point highlights.
+        ══════════════════════════════════════════════════ -->
+        <div class="proj-desc">
+          <p>
+            <!-- DESCRIPTION: What is this robot? What problem does it solve? -->
+            Autonomous mobile robot platform built on top of a Roomba base,
+            running ROS 2 with full SLAM, localization, and navigation stack.
+          </p>
+          <p>
+            <!-- DESCRIPTION: What are the interesting technical challenges? -->
+            Actively developing behavior trees for mission planning, recovery
+            behaviors for stuck detection, and navigation parameter tuning for
+            real-world robustness.
+          </p>
+          <ul>
+            <!-- ── BULLET HIGHLIGHTS — add/remove as needed ── -->
+            <li>SLAM Toolbox for real-time map building</li>
+            <li>EKF sensor fusion (IMU + wheel odometry)</li>
+            <li>NAV2 global &amp; local planning</li>
+            <li>Docker-based deployment for reproducibility</li>
+            <!-- ADD MORE BULLETS HERE -->
+          </ul>
+        </div>
+
+        <!-- ── TECH TAGS — list every major technology used ── -->
+        <div class="proj-tags">
+          <span class="tag">ROS 2</span>
+          <span class="tag">NAV2</span>
+          <span class="tag">SLAM Toolbox</span>
+          <span class="tag">EKF</span>
+          <span class="tag">Behavior Trees</span>
+          <span class="tag">C++</span>
+          <span class="tag">Python</span>
+          <span class="tag">Docker</span>
+        </div>
+
+        <!-- ── LINKS — update hrefs, add/remove as needed ── -->
+        <div class="proj-links">
+          <a href="https://github.com/seancourtney271/Docker-Rosbot-roomba" target="_blank" class="proj-link primary">GitHub Repo</a>
+          <!-- <a href="#" class="proj-link">Live Demo</a> -->
+          <!-- <a href="#" class="proj-link">Paper / Write-up</a> -->
+        </div>
+
+      </div><!-- /.project-info -->
+    </div><!-- /.project-entry #roombabot -->
+
+
+    <div class="section-divider"><span>more projects</span></div>
+
+
+    <!-- ╔══════════════════════════════════════════════════════════╗
+         ║  PROJECT 2 — replace with your second project           ║
+         ║  Update id="project2" to a short slug for deep-linking  ║
+         ╚══════════════════════════════════════════════════════════╝ -->
+    <div class="project-entry" id="project2">
+
+      <div class="project-media">
+        <!--
+          ★ DROP YOUR MAIN VIDEO / GIF HERE ★
+          Same options as above — video, gif, or YouTube iframe.
+        -->
+        <div class="media-placeholder">
+          <div class="mp-icon">⚙️</div>
+          <p>Add your project 2 video or GIF here.</p>
+          <code>&lt;video autoplay muted loop playsinline&gt;<br/>
+  &lt;source src="assets/project2.mp4"/&gt;<br/>
+&lt;/video&gt;</code>
+        </div>
+        <!--
+        <div class="media-extras">
+          <img src="assets/proj2-thumb1.png" alt="Screenshot 1"/>
+          <img src="assets/proj2-thumb2.gif" alt="Demo clip"/>
+        </div>
+        -->
+      </div>
+
+      <div class="project-info">
+        <!-- ── STATUS: active / complete / archived ── -->
+        <span class="proj-status complete">● complete</span>
+
+        <!-- ── PROJECT TITLE ── -->
+        <p class="proj-title">Project Title</p>
+        <!-- ── SHORT SUBTITLE ── -->
+        <p class="proj-subtitle">Category · Main Tech</p>
+
+        <!-- ══════════════════════════════════════════════════
+             ★ YOUR DESCRIPTION GOES HERE ★
+        ══════════════════════════════════════════════════ -->
+        <div class="proj-desc">
+          <p>
+            <!-- DESCRIPTION: What did you build and why? -->
+            Describe what this project is and what problem it solves.
+          </p>
+          <p>
+            <!-- DESCRIPTION: Technical approach / interesting details -->
+            Explain the interesting technical bits here.
+          </p>
+          <ul>
+            <!-- ── BULLET HIGHLIGHTS ── -->
+            <li>Key feature or result 1</li>
+            <li>Key feature or result 2</li>
+            <li>Key feature or result 3</li>
+          </ul>
+        </div>
+
+        <!-- ── TECH TAGS ── -->
+        <div class="proj-tags">
+          <span class="tag">Tech 1</span>
+          <span class="tag">Tech 2</span>
+          <span class="tag">Tech 3</span>
+        </div>
+
+        <!-- ── LINKS ── -->
+        <div class="proj-links">
+          <a href="#" class="proj-link primary">GitHub Repo</a>
+          <!-- <a href="#" class="proj-link">Demo Video</a> -->
+        </div>
+      </div>
+    </div><!-- /.project-entry #project2 -->
+
+
+    <!-- ╔══════════════════════════════════════════════════════════╗
+         ║  PROJECT 3                                               ║
+         ╚══════════════════════════════════════════════════════════╝ -->
+    <div class="project-entry" id="project3">
+
+      <div class="project-media">
+        <!--
+          ★ DROP YOUR MAIN VIDEO / GIF HERE ★
+        -->
+        <div class="media-placeholder">
+          <div class="mp-icon">🦾</div>
+          <p>Add your project 3 video or GIF here.</p>
+          <code>&lt;img src="assets/project3.gif" alt="Demo"/&gt;</code>
+        </div>
+      </div>
+
+      <div class="project-info">
+        <span class="proj-status complete">● complete</span>
+        <p class="proj-title">Project Title</p>
+        <p class="proj-subtitle">Category · Main Tech</p>
+
+        <div class="proj-desc">
+          <p>
+            <!-- DESCRIPTION ── -->
+            Describe what this project is and what problem it solves.
+          </p>
+          <ul>
+            <li>Key feature or result 1</li>
+            <li>Key feature or result 2</li>
+          </ul>
+        </div>
+
+        <div class="proj-tags">
+          <span class="tag">Tech 1</span>
+          <span class="tag">Tech 2</span>
+        </div>
+
+        <div class="proj-links">
+          <a href="#" class="proj-link primary">GitHub Repo</a>
+        </div>
+      </div>
+    </div><!-- /.project-entry #project3 -->
+
+
+    <!-- ╔══════════════════════════════════════════════════════════╗
+         ║  PROJECT 4 — duplicate this block for more projects      ║
+         ╚══════════════════════════════════════════════════════════╝ -->
+    <div class="project-entry" id="project4">
+
+      <div class="project-media">
+        <div class="media-placeholder">
+          <div class="mp-icon">🧠</div>
+          <p>Add your project 4 video or GIF here.</p>
+          <code>&lt;video autoplay muted loop playsinline&gt;<br/>
+  &lt;source src="assets/project4.mp4"/&gt;<br/>
+&lt;/video&gt;</code>
+        </div>
+      </div>
+
+      <div class="project-info">
+        <span class="proj-status complete">● complete</span>
+        <p class="proj-title">Project Title</p>
+        <p class="proj-subtitle">Category · Main Tech</p>
+
+        <div class="proj-desc">
+          <p>
+            <!-- DESCRIPTION ── -->
+            Describe what this project is and what problem it solves.
+          </p>
+          <ul>
+            <li>Key feature or result 1</li>
+            <li>Key feature or result 2</li>
+          </ul>
+        </div>
+
+        <div class="proj-tags">
+          <span class="tag">Tech 1</span>
+          <span class="tag">Tech 2</span>
+        </div>
+
+        <div class="proj-links">
+          <a href="#" class="proj-link primary">GitHub Repo</a>
+        </div>
+      </div>
+    </div><!-- /.project-entry #project4 -->
+
+
+    <!-- ── ADD MORE PROJECTS BY DUPLICATING A .project-entry BLOCK ABOVE ── -->
+
+
+  </div><!-- /.projects-container -->
+
+  <!-- ════════════════════════════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════════════════════════════ -->
+  <footer style="border-top:1px solid var(--border);padding:2rem;text-align:center;font-family:var(--mono);font-size:0.72rem;color:var(--muted);position:relative;z-index:1;">
+    <p>© 2025 Sean Courtney &nbsp;·&nbsp;
+      <a href="index.html">← home</a> &nbsp;·&nbsp;
+      <a href="https://github.com/seancourtney271" target="_blank">github.com/seancourtney271</a>
+    </p>
+  </footer>
+
+</body>
+</html>
