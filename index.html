@@ -245,8 +245,13 @@
       font-family: var(--mono); font-size: 0.7rem; color: var(--muted);
       text-align: center; padding: 1rem;
     }
-    /* When you add a real thumbnail/gif, the <img> inside .card-thumb will fill this area */
-    .card-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    /* When you add a real thumbnail/gif, the <img> inside .card-thumb will fit this area */
+    .card-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
     .card-body { padding: 1.25rem 1.5rem; flex: 1; display: flex; flex-direction: column; }
     .card-status {
       font-family: var(--mono); font-size: 0.65rem;
@@ -509,9 +514,7 @@
         ══════════════════════════════════════════════════ -->
         <div class="project-card">
           <div class="card-thumb">
-            <!-- DROP YOUR THUMBNAIL / GIF HERE
-                 e.g. <img src="assets/roombabot-thumb.gif" alt="Roombabot demo"/> -->
-            <div class="card-thumb-placeholder">[ thumbnail / gif ]<br/>roombabot</div>
+            <img src="assets/roombabot/roombotNav.png" alt="Roombabot demo" />
           </div>
           <div class="card-body">
             <span class="card-status active">● active</span>
@@ -569,30 +572,23 @@
         </div>
 
         <!-- ══════════════════════════════════════════════════
-             PROJECT CARD 3 — add your third project here
-        ══════════════════════════════════════════════════ -->
-        <div class="project-card">
-          <div class="card-thumb">
-            <!-- DROP YOUR THUMBNAIL / GIF HERE -->
-            <div class="card-thumb-placeholder">[ thumbnail / gif ]<br/>project 3</div>
-          </div>
-          <div class="card-body">
-            <span class="card-status complete">● complete</span>
-            <!-- ── PROJECT TITLE ── -->
-            <p class="card-title">Project Title</p>
-            <!-- ── ONE-LINE DESCRIPTION ── -->
-            <p class="card-desc">
-              Short description of what this project does and what makes it interesting.
-            </p>
-            <div class="card-tags">
-              <!-- ── TECH TAGS ── -->
-              <span class="tag">Tech 1</span><span class="tag">Tech 2</span>
+               PROJECT CARD 3 — coming soon
+          ══════════════════════════════════════════════════ -->
+          <div class="project-card">
+            <div class="card-thumb">
+              <div class="card-thumb-placeholder">More projects coming soon</div>
             </div>
-            <div class="card-links">
-              <!-- ── LINKS — update hrefs ── -->
-              <a href="#" class="card-link">GitHub</a>
-              <a href="projects.html#project3" class="card-link">Full Demo →</a>
-            </div>
+            <div class="card-body">
+              <span class="card-status complete">● coming soon</span>
+              <p class="card-title">More Robotics & AI Work</p>
+              <p class="card-desc">
+                I'm still fleshing out this portfolio. Check back soon for more autonomy, perception, and robotics demos.
+              </p>
+              <div class="card-tags">
+                <span class="tag">WIP</span><span class="tag">Portfolio</span>
+              </div>
+              <div class="card-links">
+                <a href="projects.html" class="card-link">View All Projects</a>
           </div>
         </div>
 
